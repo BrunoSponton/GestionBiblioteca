@@ -49,6 +49,14 @@ namespace Presentacion
                 return;
             }
 
+            // Verificar si el usuario tiene un préstamo activo
+            Usuario usuario = negUsuarios.ObtenerUsuarioPorID(usuarioID);
+            if (usuario.PrestamoActivo)
+            {
+                MessageBox.Show("El usuario ya tiene un préstamo activo. Debe devolver el libro antes de pedir otro.");
+                return;
+            }
+
             // Obtener el LibroID del ComboBox
             int libroID = (int)comboBoxLibros.SelectedValue;
 
@@ -66,6 +74,10 @@ namespace Presentacion
                 // Descontar 1 del stock del libro
                 if (negLibros.DescontarStock(libroID))
                 {
+                    // Actualizar PrestamoActivo del usuario a true
+                    usuario.PrestamoActivo = true;
+                    negUsuarios.AbmUsuarios("Modificar", usuario); // Actualizar en la base de datos
+
                     MessageBox.Show("Préstamo registrado exitosamente y stock actualizado.");
                 }
                 else

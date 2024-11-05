@@ -32,6 +32,10 @@ namespace Negocios
             }
             return -1; // Usuario no encontrado
         }
+        public Usuario ObtenerUsuarioPorID(int usuarioID)
+        {
+            return objDatosUsuarios.ObtenerUsuarioPorID(usuarioID);
+        }
     }
 }
 

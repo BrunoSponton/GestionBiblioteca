@@ -80,6 +80,45 @@ namespace Datos
             return ds;
         }
 
+        public Usuario ObtenerUsuarioPorID(int usuarioID)
+        {
+            string orden = "SELECT * FROM Usuarios WHERE UsuarioID = @UsuarioID;";
+            SqlCommand cmd = new SqlCommand(orden, conexion);
+            cmd.Parameters.AddWithValue("@UsuarioID", usuarioID);
+
+            Usuario usuario = null;
+
+            try
+            {
+                AbrirConexion();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        usuario = new Usuario
+                        {
+                            UsuarioID = Convert.ToInt32(reader["UsuarioID"]),
+                            Nombre = reader["Nombre"].ToString(),
+                            Dni = reader["Dni"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            Direccion = reader["Direccion"].ToString(),
+                            PrestamoActivo = Convert.ToBoolean(reader["PrestamoActivo"])
+                        };
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al obtener el usuario por ID", e);
+            }
+            finally
+            {
+                CerrarConexion();
+                cmd.Dispose();
+            }
+
+            return usuario;
+        }
 
     }
 }
