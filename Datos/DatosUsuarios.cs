@@ -58,27 +58,39 @@ namespace Datos
 
         public DataSet ListadoUsuarios(string dni)
         {
-            string orden = "SELECT * FROM Usuarios WHERE DNI = @dni"; // Reemplaza 'Usuarios' y 'DNI' con los nombres correctos
-            SqlCommand cmd = new SqlCommand(orden, conexion);
-            cmd.Parameters.AddWithValue("@dni", dni); // Usar parámetros para evitar inyecciones SQL
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataSet ds = new DataSet();
-            try
+            string orden;
+
+            if (dni != "Todos")
+                orden = "SELECT * FROM Usuarios WHERE DNI = @dni;";
+            else
+                orden = "SELECT * FROM Usuarios;";
+
+            using (SqlCommand cmd = new SqlCommand(orden, conexion))
             {
-                AbrirConexion();
-                da.Fill(ds);
+                if (dni != "Todos")
+                    cmd.Parameters.AddWithValue("@dni", dni);
+
+                DataSet ds = new DataSet();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                try
+                {
+                    AbrirConexion();
+                    da.Fill(ds);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error al listar usuarios", e);
+                }
+                finally
+                {
+                    CerrarConexion();
+                }
+
+                return ds;
             }
-            catch (Exception e)
-            {
-                throw new Exception("Error al listar usuarios", e);
-            }
-            finally
-            {
-                CerrarConexion();
-                cmd.Dispose();
-            }
-            return ds;
         }
+
 
         public Usuario ObtenerUsuarioPorID(int usuarioID)
         {
@@ -120,5 +132,46 @@ namespace Datos
             return usuario;
         }
 
+        // Nuevo método para actualizar el estado de préstamo activo de un usuario
+        public int ActualizarPrestamoActivo(int usuarioID, bool prestamoActivo)
+        {
+            int resultado = -1;
+            string orden = "UPDATE Usuarios SET PrestamoActivo = @PrestamoActivo WHERE UsuarioID = @UsuarioID;";
+
+            using (SqlCommand cmd = new SqlCommand(orden, conexion))
+            {
+                cmd.Parameters.AddWithValue("@PrestamoActivo", prestamoActivo);
+                cmd.Parameters.AddWithValue("@UsuarioID", usuarioID);
+
+                try
+                {
+                    AbrirConexion();
+                    resultado = cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error al actualizar el estado de préstamo activo del usuario", e);
+                }
+                finally
+                {
+                    CerrarConexion();
+                    cmd.Dispose();
+                }
+            }
+            return resultado;
+        }
+
+        public DataSet ObtenerUsuarioConPrestamoActivo(int usuarioID)
+        {
+            string orden = "SELECT UsuarioID, PrestamoActivo FROM Usuarios WHERE UsuarioID = @UsuarioID";
+            using (SqlCommand cmd = new SqlCommand(orden, conexion))
+            {
+                cmd.Parameters.AddWithValue("@UsuarioID", usuarioID);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds);
+                return ds;
+            }
+        }
     }
 }

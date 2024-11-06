@@ -36,6 +36,17 @@ namespace Negocios
         {
             return objDatosUsuarios.ObtenerUsuarioPorID(usuarioID);
         }
+
+        // Nuevo método para actualizar el estado de préstamo activo de un usuario
+        public int ActualizarPrestamoActivo(int usuarioID, bool prestamoActivo)
+        {
+            return objDatosUsuarios.ActualizarPrestamoActivo(usuarioID, prestamoActivo);
+        }
+
+        public DataSet ObtenerUsuarioConPrestamoActivo(int usuarioID)
+        {
+            return objDatosUsuarios.ObtenerUsuarioConPrestamoActivo(usuarioID);
+        }
     }
 }
 
