@@ -3,6 +3,7 @@ using System.Data;
 using System.Windows.Forms;
 using Entidades;
 using Negocios;
+using System.Text.RegularExpressions;
 
 namespace Presentacion
 {
@@ -50,9 +51,12 @@ namespace Presentacion
             }
         }
 
-
         private void btnAlta_Click_1(object sender, EventArgs e)
         {
+            // Validar campos antes de proceder
+            if (!ValidarCampos())
+                return;
+
             Usuario nuevoUsuario = new Usuario
             {
                 Nombre = txtNombre.Text.Trim(),
@@ -77,6 +81,10 @@ namespace Presentacion
 
         private void btnModificar_Click_1(object sender, EventArgs e)
         {
+            // Validar campos antes de proceder
+            if (!ValidarCampos())
+                return;
+
             if (dgvUsuarios.SelectedRows.Count > 0)
             {
                 int usuarioID = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["UsuarioID"].Value);
@@ -166,6 +174,46 @@ namespace Presentacion
             this.Close();  // Cierra el formulario actual y vuelve a FormInicio
         }
 
+        // Método de validación para los campos
+        private bool ValidarCampos()
+        {
+            // Validar nombre
+            if (string.IsNullOrEmpty(txtNombre.Text.Trim()))
+            {
+                MessageBox.Show("El nombre es obligatorio.");
+                return false;
+            }
+
+            // Validar DNI (debe ser numérico)
+            if (string.IsNullOrEmpty(txtDni.Text.Trim()) || !int.TryParse(txtDni.Text.Trim(), out _))
+            {
+                MessageBox.Show("El DNI debe ser un número válido.");
+                return false;
+            }
+
+            // Validar email
+            if (string.IsNullOrEmpty(txtEmail.Text.Trim()) || !ValidarEmail(txtEmail.Text.Trim()))
+            {
+                MessageBox.Show("El email no tiene un formato válido.");
+                return false;
+            }
+
+            // Validar dirección
+            if (string.IsNullOrEmpty(txtDireccion.Text.Trim()))
+            {
+                MessageBox.Show("La dirección es obligatoria.");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Método para validar formato de email
+        private bool ValidarEmail(string email)
+        {
+            var regex = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+            return regex.IsMatch(email);
+        }
     }
 }
 

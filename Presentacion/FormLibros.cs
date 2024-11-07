@@ -50,6 +50,43 @@ namespace Presentacion
                 dgvLibros.Columns["LibroID"].Visible = false;
             }
         }
+       
+        //METODO DE VALIDACION:
+        private bool ValidarCampos()
+        {
+            // Verificar que Título, Autor y Género no estén vacíos
+            if (string.IsNullOrWhiteSpace(txtTitulo.Text))
+            {
+                MessageBox.Show("El campo 'Título' no puede estar vacío.", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtTitulo.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAutor.Text))
+            {
+                MessageBox.Show("El campo 'Autor' no puede estar vacío.", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtAutor.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtGenero.Text))
+            {
+                MessageBox.Show("El campo 'Género' no puede estar vacío.", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtGenero.Focus();
+                return false;
+            }
+
+            // Verificar que Stock sea un número positivo
+            if (!int.TryParse(txtStock.Text, out int stock) || stock < 0)
+            {
+                MessageBox.Show("El campo 'Stock' debe ser un número entero positivo.", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtStock.Focus();
+                return false;
+            }
+
+            // Si todas las validaciones pasaron, retornar true
+            return true;
+        }
 
 
         private void TxtBox_a_Obj()
@@ -62,6 +99,9 @@ namespace Presentacion
 
         private void btnAlta_Click_1(object sender, EventArgs e)
         {
+            // Validar los campos antes de continuar
+            if (!ValidarCampos()) return;
+
             int nGrabados = -1;
             TxtBox_a_Obj();
             nGrabados = objNegLibro.AbmLibros("Alta", objEntLibro);
@@ -110,6 +150,9 @@ namespace Presentacion
 
         private void btnModificar_Click_1(object sender, EventArgs e)
         {
+            // Validar los campos antes de continuar
+            if (!ValidarCampos()) return;
+
             int nResultado = -1;
             TxtBox_a_Obj();
             nResultado = objNegLibro.AbmLibros("Modificar", objEntLibro);

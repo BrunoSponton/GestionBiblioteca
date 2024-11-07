@@ -22,6 +22,7 @@ namespace Presentacion
         {
             InitializeComponent();
             CargarLibros(); // Método para cargar los libros en el ComboBox
+            txtDni.KeyPress += new KeyPressEventHandler(txtDni_KeyPress);
         }
 
         private void CargarLibros()
@@ -30,6 +31,23 @@ namespace Presentacion
             comboBoxLibros.DisplayMember = "Titulo"; // Campo a mostrar
             comboBoxLibros.ValueMember = "LibroID"; // Valor asociado
             comboBoxLibros.DataSource = dsLibros.Tables[0]; // Asignar DataTable al ComboBox
+        }
+
+        private void txtDni_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Solo permite números y teclas de retroceso
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+                if (e.KeyChar == '.')
+                {
+                    MessageBox.Show("Por favor, ingrese el DNI sin puntos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("Solo se permiten números en el campo DNI.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                e.Handled = true; // Cancela el ingreso de la tecla actual
+            }
         }
 
         private void btnAceptar_Click_1(object sender, EventArgs e)
