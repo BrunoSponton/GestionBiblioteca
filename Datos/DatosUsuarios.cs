@@ -173,5 +173,41 @@ namespace Datos
                 return ds;
             }
         }
+
+        public string ObtenerNombreDeUsuarioPorDNI(string dni)
+        {
+            string nombre = string.Empty;
+            string orden = "SELECT Nombre FROM Usuarios WHERE Dni = @Dni;";
+
+            using (SqlCommand cmd = new SqlCommand(orden, conexion))
+            {
+                cmd.Parameters.AddWithValue("@Dni", dni);
+
+                try
+                {
+                    AbrirConexion();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            nombre = reader["Nombre"].ToString();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error al obtener el nombre del usuario por DNI", e);
+                }
+                finally
+                {
+                    CerrarConexion();
+                    cmd.Dispose();
+                }
+            }
+
+            return nombre;
+        }
+
+
     }
 }

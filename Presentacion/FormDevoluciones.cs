@@ -40,7 +40,6 @@ namespace Presentacion
                 return;
             }
 
-            // Obtener el UsuarioID a partir del DNI
             int usuarioID = ObtenerUsuarioID(txtDni.Text);
             if (usuarioID == -1)
             {
@@ -50,7 +49,6 @@ namespace Presentacion
 
             int libroID = (int)comboBoxLibros.SelectedValue;
 
-            // Verificar si el usuario tiene un préstamo activo y si corresponde al libro seleccionado
             Prestamo prestamoActivo = ObtenerPrestamoActivo(usuarioID, libroID);
             if (prestamoActivo == null)
             {
@@ -58,18 +56,15 @@ namespace Presentacion
                 return;
             }
 
-            // Incrementar el stock del libro
             if (!negLibros.IncrementarStock(libroID))
             {
                 MessageBox.Show("Error al incrementar el stock del libro.");
                 return;
             }
 
-            // Cambiar el estado de PrestamoActivo a false en el usuario
             Usuario usuario = new Usuario { UsuarioID = usuarioID, PrestamoActivo = false };
             if (negUsuarios.ActualizarPrestamoActivo(usuario.UsuarioID, false) > 0)
             {
-                // Comparar fechas para determinar si la devolución fue en tiempo o fuera de término
                 DateTime fechaActual = DateTime.Now;
                 string mensaje = (fechaActual <= prestamoActivo.FechaDevolucion)
                     ? "Devolución realizada a tiempo."
@@ -95,7 +90,6 @@ namespace Presentacion
 
         private Prestamo ObtenerPrestamoActivo(int usuarioID, int libroID)
         {
-            // Obtener el usuario específico y verificar si tiene préstamo activo
             DataSet dsUsuario = negUsuarios.ObtenerUsuarioConPrestamoActivo(usuarioID);
             DataTable tablaUsuario = dsUsuario.Tables[0];
 
@@ -105,7 +99,6 @@ namespace Presentacion
                 return null;
             }
 
-            // Encontrar el préstamo en la tabla de préstamos
             DataSet dsPrestamos = negPrestamos.ListadoPrestamos("Todos");
             DataTable tablaPrestamos = dsPrestamos.Tables[0];
 
@@ -132,8 +125,44 @@ namespace Presentacion
         {
             FormInicio formInicio = new FormInicio();
             formInicio.Show();
-            this.Close();  // Cierra el formulario actual y vuelve a FormInicio
+            this.Close();
+        }
+
+        private void btnVerificarUsuario_Click_1(object sender, EventArgs e)
+        {
+            string dni = txtDni.Text.Trim();
+            if (string.IsNullOrEmpty(dni))
+            {
+                MessageBox.Show("Por favor, ingrese un DNI.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string nombreUsuario = negUsuarios.ObtenerNombreDeUsuarioPorDNI(dni);
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                MessageBox.Show("Usuario no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MessageBox.Show($"Usuario encontrado: {nombreUsuario}", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            int usuarioID = ObtenerUsuarioID(dni);
+            int libroID = (int)comboBoxLibros.SelectedValue;
+            Prestamo prestamoActivo = ObtenerPrestamoActivo(usuarioID, libroID);
+
+            if (prestamoActivo != null)
+            {
+                for (int i = 0; i < comboBoxLibros.Items.Count; i++)
+                {
+                    if (((DataRowView)comboBoxLibros.Items[i])["LibroID"].ToString() == libroID.ToString())
+                    {
+                        comboBoxLibros.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
         }
     }
 }
+
 

@@ -47,6 +47,12 @@ namespace Negocios
         {
             return objDatosUsuarios.ObtenerUsuarioConPrestamoActivo(usuarioID);
         }
+
+        public string ObtenerNombreDeUsuarioPorDNI(string dni)
+        {
+            return objDatosUsuarios.ObtenerNombreDeUsuarioPorDNI(dni);
+        }
+
     }
 }
 
