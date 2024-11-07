@@ -57,8 +57,12 @@ namespace Presentacion
                 return;
             }
 
-            // Obtener el LibroID del ComboBox
+            // Obtener el nombre del usuario
+            string nombreUsuario = negUsuarios.ObtenerNombreDeUsuarioPorDNI(txtDni.Text);
+
+            // Obtener el LibroID y el título del libro del ComboBox
             int libroID = (int)comboBoxLibros.SelectedValue;
+            string tituloLibro = comboBoxLibros.Text;
 
             // Crear un objeto Prestamo
             Prestamo nuevoPrestamo = new Prestamo(usuarioID, libroID)
@@ -78,7 +82,7 @@ namespace Presentacion
                     usuario.PrestamoActivo = true;
                     negUsuarios.AbmUsuarios("Modificar", usuario); // Actualizar en la base de datos
 
-                    MessageBox.Show("Préstamo registrado exitosamente y stock actualizado.");
+                    MessageBox.Show($"Préstamo registrado a nombre de {nombreUsuario} con el libro '{tituloLibro}'");
                 }
                 else
                 {
@@ -90,6 +94,7 @@ namespace Presentacion
                 MessageBox.Show("Error al registrar el préstamo.");
             }
         }
+
 
 
 
