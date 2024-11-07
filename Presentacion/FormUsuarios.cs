@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Entidades;
 using Negocios;
@@ -14,152 +8,157 @@ namespace Presentacion
 {
     public partial class FormUsuarios : Form
     {
-        public Usuario objEntUsuario = new Usuario();
-        public NegUsuarios objNegUsuario = new NegUsuarios();
+        private NegUsuarios negUsuarios = new NegUsuarios();
 
         public FormUsuarios()
         {
             InitializeComponent();
-            dgvUsuarios.ColumnCount = 4;
-            dgvUsuarios.Columns[0].HeaderText = "Nombre";
-            dgvUsuarios.Columns[1].HeaderText = "DNI";
-            dgvUsuarios.Columns[2].HeaderText = "Email";
-            dgvUsuarios.Columns[3].HeaderText = "Dirección";
-            dgvUsuarios.Columns[0].Width = 150;
-            dgvUsuarios.Columns[1].Width = 100;
-            dgvUsuarios.Columns[2].Width = 150;
-            dgvUsuarios.Columns[3].Width = 150;
-            LlenarDGV();
+            CargarUsuarios();
         }
 
-        private void LlenarDGV()
+        private void CargarUsuarios(string filtroDni = "Todos")
         {
-            dgvUsuarios.Rows.Clear();
-            DataSet ds = objNegUsuario.ListadoUsuarios("Todos");
-            if (ds.Tables[0].Rows.Count > 0)
+            // Cargar listado de usuarios en el DataGridView
+            DataSet dsUsuarios = negUsuarios.ListadoUsuarios(filtroDni);
+            dgvUsuarios.DataSource = dsUsuarios.Tables[0];
+        }
+
+        private void btnBuscar_Click_1(object sender, EventArgs e)
+        {
+            string filtro = txtBuscar.Text.Trim();
+
+            if (string.IsNullOrEmpty(filtro))
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    dgvUsuarios.Rows.Add(dr["Nombre"].ToString(), dr["Dni"].ToString(), dr["Email"].ToString(), dr["Direccion"].ToString());
-                }
+                // Si no hay filtro, cargamos todos los usuarios.
+                CargarUsuarios();
+                return;
+            }
+
+            // Detectamos si el filtro es un DNI (numérico) o un nombre (texto).
+            if (int.TryParse(filtro, out _))
+            {
+                // Si es un número, asumimos que es un DNI y aplicamos el filtro de DNI.
+                CargarUsuarios(filtro);
             }
             else
             {
-                MessageBox.Show("No hay usuarios cargados en el sistema", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Si es texto, asumimos que es un nombre y aplicamos el filtro de nombre.
+                DataTable dtUsuarios = ((DataTable)dgvUsuarios.DataSource);
+                DataView dvUsuarios = new DataView(dtUsuarios);
+                dvUsuarios.RowFilter = $"Nombre LIKE '%{filtro}%'";
+                dgvUsuarios.DataSource = dvUsuarios;
             }
         }
 
-        private void TxtBox_a_Obj()
-        {
-            objEntUsuario.Nombre = txtNombre.Text;
-            objEntUsuario.Dni = txtDni.Text;
-            objEntUsuario.Email = txtEmail.Text;
-            objEntUsuario.Direccion = txtDireccion.Text;
-        }
 
         private void btnAlta_Click_1(object sender, EventArgs e)
         {
-            int nGrabados = -1;
-            TxtBox_a_Obj();
-            nGrabados = objNegUsuario.AbmUsuarios("Agregar", objEntUsuario);
-            if (nGrabados == -1)
+            Usuario nuevoUsuario = new Usuario
             {
-                MessageBox.Show("No se pudo grabar el usuario en el sistema", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Nombre = txtNombre.Text.Trim(),
+                Dni = txtDni.Text.Trim(),
+                Email = txtEmail.Text.Trim(),
+                Direccion = txtDireccion.Text.Trim()
+            };
+
+            int resultado = negUsuarios.AbmUsuarios("Alta", nuevoUsuario);
+
+            if (resultado > 0)
+            {
+                MessageBox.Show("Usuario agregado correctamente.");
+                LimpiarCampos();
+                CargarUsuarios();
             }
             else
             {
-                MessageBox.Show("El usuario se grabó con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LlenarDGV();
-                Limpiar();
+                MessageBox.Show("Error al agregar el usuario.");
             }
-        }
-
-        private void Limpiar()
-        {
-            txtNombre.Text = string.Empty;
-            txtDni.Text = string.Empty;
-            txtEmail.Text = string.Empty;
-            txtDireccion.Text = string.Empty;
-            txtBuscar.Text = string.Empty;
-            txtNombre.Enabled = true;
-        }
-
-        private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataSet ds = new DataSet();
-            objEntUsuario.Nombre = dgvUsuarios.CurrentRow.Cells[0].Value.ToString();
-            ds = objNegUsuario.ListadoUsuarios(objEntUsuario.Nombre);
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Ds_a_TxtBox(ds);
-                btnAlta.Visible = false;
-            }
-        }
-
-        private void Ds_a_TxtBox(DataSet ds)
-        {
-            txtNombre.Text = ds.Tables[0].Rows[0]["Nombre"].ToString();
-            txtDni.Text = ds.Tables[0].Rows[0]["Dni"].ToString();
-            txtEmail.Text = ds.Tables[0].Rows[0]["Email"].ToString();
-            txtDireccion.Text = ds.Tables[0].Rows[0]["Direccion"].ToString();
-            txtNombre.Enabled = false;
         }
 
         private void btnModificar_Click_1(object sender, EventArgs e)
         {
-            int nResultado = -1;
-            TxtBox_a_Obj();
-            nResultado = objNegUsuario.AbmUsuarios("Modificar", objEntUsuario);
-            if (nResultado != -1)
+            if (dgvUsuarios.SelectedRows.Count > 0)
             {
-                MessageBox.Show("El usuario fue modificado con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Limpiar();
-                LlenarDGV();
-                txtNombre.Enabled = true;
+                int usuarioID = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["UsuarioID"].Value);
+                Usuario usuarioModificado = new Usuario
+                {
+                    UsuarioID = usuarioID,
+                    Nombre = txtNombre.Text.Trim(),
+                    Dni = txtDni.Text.Trim(),
+                    Email = txtEmail.Text.Trim(),
+                    Direccion = txtDireccion.Text.Trim()
+                };
+
+                int resultado = negUsuarios.AbmUsuarios("Modificar", usuarioModificado);
+
+                if (resultado > 0)
+                {
+                    MessageBox.Show("Usuario modificado correctamente.");
+                    LimpiarCampos();
+                    CargarUsuarios();
+                }
+                else
+                {
+                    MessageBox.Show("Error al modificar el usuario.");
+                }
             }
             else
             {
-                MessageBox.Show("Error al intentar modificar el usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Seleccione un usuario para modificar.");
             }
         }
 
         private void btnBaja_Click_1(object sender, EventArgs e)
         {
-            int nResultado = -1;
-            TxtBox_a_Obj();
-            nResultado = objNegUsuario.AbmUsuarios("Eliminar", objEntUsuario);
-            if (nResultado != -1)
+            if (dgvUsuarios.SelectedRows.Count > 0)
             {
-                MessageBox.Show("El usuario fue eliminado con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Limpiar();
-                LlenarDGV();
-            }
-            else
-            {
-                MessageBox.Show("Error al intentar eliminar el usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+                int usuarioID = Convert.ToInt32(dgvUsuarios.SelectedRows[0].Cells["UsuarioID"].Value);
 
-        private void btnBuscar_Click_1(object sender, EventArgs e)
-        {
-            DataSet ds = objNegUsuario.ListadoUsuarios(txtBuscar.Text);
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                dgvUsuarios.Rows.Clear();
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                DialogResult confirmacion = MessageBox.Show("¿Está seguro de que desea eliminar este usuario?", "Confirmación", MessageBoxButtons.YesNo);
+
+                if (confirmacion == DialogResult.Yes)
                 {
-                    dgvUsuarios.Rows.Add(dr["Nombre"].ToString(), dr["Dni"].ToString(), dr["Email"].ToString(), dr["Direccion"].ToString());
+                    Usuario usuarioEliminar = new Usuario { UsuarioID = usuarioID };
+                    int resultado = negUsuarios.AbmUsuarios("Baja", usuarioEliminar);
+
+                    if (resultado > 0)
+                    {
+                        MessageBox.Show("Usuario eliminado correctamente.");
+                        CargarUsuarios();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al eliminar el usuario.");
+                    }
                 }
-                MessageBox.Show($"Resultados para '{txtBuscar.Text}'", "Búsqueda", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("No se encontraron usuarios con ese criterio de búsqueda", "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dgvUsuarios.Rows.Clear();
+                MessageBox.Show("Seleccione un usuario para eliminar.");
             }
         }
 
-     
+        private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                // Llenar los campos con los datos del usuario seleccionado
+                DataGridViewRow row = dgvUsuarios.Rows[e.RowIndex];
+                txtNombre.Text = row.Cells["Nombre"].Value.ToString();
+                txtDni.Text = row.Cells["Dni"].Value.ToString();
+                txtEmail.Text = row.Cells["Email"].Value.ToString();
+                txtDireccion.Text = row.Cells["Direccion"].Value.ToString();
+            }
+        }
+
+        private void LimpiarCampos()
+        {
+            txtNombre.Clear();
+            txtDni.Clear();
+            txtEmail.Clear();
+            txtDireccion.Clear();
+        }
     }
 }
+
 
