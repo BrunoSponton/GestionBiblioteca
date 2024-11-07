@@ -42,6 +42,7 @@
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
+            btnAtras = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvLibros).BeginInit();
             SuspendLayout();
             // 
@@ -165,11 +166,22 @@
             label4.TabIndex = 13;
             label4.Text = "Stock:";
             // 
+            // btnAtras
+            // 
+            btnAtras.Location = new Point(900, 12);
+            btnAtras.Name = "btnAtras";
+            btnAtras.Size = new Size(94, 29);
+            btnAtras.TabIndex = 14;
+            btnAtras.Text = "Atras";
+            btnAtras.UseVisualStyleBackColor = true;
+            btnAtras.Click += btnAtras_Click_1;
+            // 
             // FormLibros
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1006, 450);
+            Controls.Add(btnAtras);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -207,5 +219,6 @@
         private Label label2;
         private Label label3;
         private Label label4;
+        private Button btnAtras;
     }
 }

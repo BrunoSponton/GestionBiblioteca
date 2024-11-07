@@ -31,6 +31,7 @@
             btnAceptar = new Button();
             txtDni = new TextBox();
             comboBoxLibros = new ComboBox();
+            btnAtras = new Button();
             SuspendLayout();
             // 
             // btnAceptar
@@ -58,11 +59,22 @@
             comboBoxLibros.Size = new Size(151, 28);
             comboBoxLibros.TabIndex = 2;
             // 
+            // btnAtras
+            // 
+            btnAtras.Location = new Point(694, 12);
+            btnAtras.Name = "btnAtras";
+            btnAtras.Size = new Size(94, 29);
+            btnAtras.TabIndex = 7;
+            btnAtras.Text = "Atras";
+            btnAtras.UseVisualStyleBackColor = true;
+            btnAtras.Click += btnAtras_Click_1;
+            // 
             // FormPrestamos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnAtras);
             Controls.Add(comboBoxLibros);
             Controls.Add(txtDni);
             Controls.Add(btnAceptar);
@@ -77,5 +89,6 @@
         private Button btnAceptar;
         private TextBox txtDni;
         private ComboBox comboBoxLibros;
+        private Button btnAtras;
     }
 }

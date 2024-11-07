@@ -42,6 +42,7 @@
             btnModificar = new Button();
             btnBaja = new Button();
             btnBuscar = new Button();
+            btnAtras = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
             SuspendLayout();
             // 
@@ -165,11 +166,22 @@
             btnBuscar.UseVisualStyleBackColor = true;
             btnBuscar.Click += btnBuscar_Click_1;
             // 
+            // btnAtras
+            // 
+            btnAtras.Location = new Point(944, 12);
+            btnAtras.Name = "btnAtras";
+            btnAtras.Size = new Size(94, 29);
+            btnAtras.TabIndex = 28;
+            btnAtras.Text = "Atras";
+            btnAtras.UseVisualStyleBackColor = true;
+            btnAtras.Click += btnAtras_Click_1;
+            // 
             // FormUsuarios
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1050, 450);
+            Controls.Add(btnAtras);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -207,5 +219,6 @@
         private Button btnModificar;
         private Button btnBaja;
         private Button btnBuscar;
+        private Button btnAtras;
     }
 }

@@ -116,6 +116,12 @@ namespace Presentacion
             }
             return -1; // Usuario no encontrado
         }
+        private void btnAtras_Click_1(object sender, EventArgs e)
+        {
+            FormInicio formInicio = new FormInicio();
+            formInicio.Show();
+            this.Close();  // Cierra el formulario actual y vuelve a FormInicio
+        }
 
     }
 }
