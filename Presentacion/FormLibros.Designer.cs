@@ -43,12 +43,13 @@
             label3 = new Label();
             label4 = new Label();
             btnAtras = new Button();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvLibros).BeginInit();
             SuspendLayout();
             // 
             // btnBuscar
             // 
-            btnBuscar.Location = new Point(536, 54);
+            btnBuscar.Location = new Point(547, 93);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(94, 29);
             btnBuscar.TabIndex = 0;
@@ -58,7 +59,7 @@
             // 
             // btnBaja
             // 
-            btnBaja.Location = new Point(597, 347);
+            btnBaja.Location = new Point(608, 386);
             btnBaja.Name = "btnBaja";
             btnBaja.Size = new Size(94, 29);
             btnBaja.TabIndex = 1;
@@ -68,7 +69,7 @@
             // 
             // btnModificar
             // 
-            btnModificar.Location = new Point(722, 347);
+            btnModificar.Location = new Point(733, 386);
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(94, 29);
             btnModificar.TabIndex = 2;
@@ -78,7 +79,7 @@
             // 
             // btnAlta
             // 
-            btnAlta.Location = new Point(842, 347);
+            btnAlta.Location = new Point(853, 386);
             btnAlta.Name = "btnAlta";
             btnAlta.Size = new Size(94, 29);
             btnAlta.TabIndex = 3;
@@ -89,7 +90,7 @@
             // dgvLibros
             // 
             dgvLibros.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvLibros.Location = new Point(73, 96);
+            dgvLibros.Location = new Point(84, 136);
             dgvLibros.Name = "dgvLibros";
             dgvLibros.RowHeadersWidth = 51;
             dgvLibros.Size = new Size(618, 230);
@@ -97,35 +98,35 @@
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(82, 53);
+            txtBuscar.Location = new Point(93, 92);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(435, 27);
             txtBuscar.TabIndex = 5;
             // 
             // txtTitulo
             // 
-            txtTitulo.Location = new Point(722, 96);
+            txtTitulo.Location = new Point(733, 136);
             txtTitulo.Name = "txtTitulo";
             txtTitulo.Size = new Size(212, 27);
             txtTitulo.TabIndex = 6;
             // 
             // txtAutor
             // 
-            txtAutor.Location = new Point(722, 164);
+            txtAutor.Location = new Point(733, 203);
             txtAutor.Name = "txtAutor";
             txtAutor.Size = new Size(212, 27);
             txtAutor.TabIndex = 7;
             // 
             // txtGenero
             // 
-            txtGenero.Location = new Point(722, 229);
+            txtGenero.Location = new Point(733, 268);
             txtGenero.Name = "txtGenero";
             txtGenero.Size = new Size(212, 27);
             txtGenero.TabIndex = 8;
             // 
             // txtStock
             // 
-            txtStock.Location = new Point(722, 299);
+            txtStock.Location = new Point(733, 338);
             txtStock.Name = "txtStock";
             txtStock.Size = new Size(212, 27);
             txtStock.TabIndex = 9;
@@ -133,7 +134,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(723, 72);
+            label1.Location = new Point(734, 111);
             label1.Name = "label1";
             label1.Size = new Size(50, 20);
             label1.TabIndex = 10;
@@ -142,7 +143,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(722, 141);
+            label2.Location = new Point(733, 180);
             label2.Name = "label2";
             label2.Size = new Size(49, 20);
             label2.TabIndex = 11;
@@ -151,7 +152,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(722, 206);
+            label3.Location = new Point(733, 244);
             label3.Name = "label3";
             label3.Size = new Size(60, 20);
             label3.TabIndex = 12;
@@ -160,7 +161,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(722, 276);
+            label4.Location = new Point(733, 316);
             label4.Name = "label4";
             label4.Size = new Size(48, 20);
             label4.TabIndex = 13;
@@ -176,11 +177,21 @@
             btnAtras.UseVisualStyleBackColor = true;
             btnAtras.Click += btnAtras_Click_1;
             // 
+            // label5
+            // 
+            label5.Font = new Font("Verdana", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(93, 30);
+            label5.Name = "label5";
+            label5.Size = new Size(343, 37);
+            label5.TabIndex = 15;
+            label5.Text = "GESTIÓN DE LIBROS";
+            // 
             // FormLibros
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1006, 450);
+            Controls.Add(label5);
             Controls.Add(btnAtras);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -220,5 +231,6 @@
         private Label label3;
         private Label label4;
         private Button btnAtras;
+        private Label label5;
     }
 }

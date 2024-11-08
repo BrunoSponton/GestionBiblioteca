@@ -33,26 +33,29 @@
             btnAceptar = new Button();
             btnAtras = new Button();
             btnVerificarUsuario = new Button();
+            label5 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             SuspendLayout();
             // 
             // comboBoxLibros
             // 
             comboBoxLibros.FormattingEnabled = true;
-            comboBoxLibros.Location = new Point(323, 190);
+            comboBoxLibros.Location = new Point(274, 184);
             comboBoxLibros.Name = "comboBoxLibros";
             comboBoxLibros.Size = new Size(151, 28);
             comboBoxLibros.TabIndex = 5;
             // 
             // txtDni
             // 
-            txtDni.Location = new Point(133, 191);
+            txtDni.Location = new Point(84, 185);
             txtDni.Name = "txtDni";
             txtDni.Size = new Size(159, 27);
             txtDni.TabIndex = 4;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(608, 191);
+            btnAceptar.Location = new Point(559, 185);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(94, 29);
             btnAceptar.TabIndex = 3;
@@ -72,7 +75,7 @@
             // 
             // btnVerificarUsuario
             // 
-            btnVerificarUsuario.Location = new Point(496, 191);
+            btnVerificarUsuario.Location = new Point(447, 185);
             btnVerificarUsuario.Name = "btnVerificarUsuario";
             btnVerificarUsuario.Size = new Size(94, 29);
             btnVerificarUsuario.TabIndex = 7;
@@ -80,11 +83,41 @@
             btnVerificarUsuario.UseVisualStyleBackColor = true;
             btnVerificarUsuario.Click += btnVerificarUsuario_Click_1;
             // 
+            // label5
+            // 
+            label5.Font = new Font("Verdana", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(84, 80);
+            label5.Name = "label5";
+            label5.Size = new Size(462, 37);
+            label5.TabIndex = 17;
+            label5.Text = "REGISTRAR DEVOLUCIONES";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(84, 162);
+            label2.Name = "label2";
+            label2.Size = new Size(38, 20);
+            label2.TabIndex = 26;
+            label2.Text = "DNI:";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(274, 162);
+            label1.Name = "label1";
+            label1.Size = new Size(46, 20);
+            label1.TabIndex = 27;
+            label1.Text = "Libro:";
+            // 
             // FormDevoluciones
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
+            Controls.Add(label2);
+            Controls.Add(label5);
             Controls.Add(btnVerificarUsuario);
             Controls.Add(btnAtras);
             Controls.Add(comboBoxLibros);
@@ -103,5 +136,8 @@
         private Button btnAceptar;
         private Button btnAtras;
         private Button btnVerificarUsuario;
+        private Label label5;
+        private Label label2;
+        private Label label1;
     }
 }

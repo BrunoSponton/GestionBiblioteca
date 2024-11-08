@@ -32,6 +32,9 @@
             txtDni = new TextBox();
             comboBoxLibros = new ComboBox();
             btnAtras = new Button();
+            label5 = new Label();
+            label1 = new Label();
+            label2 = new Label();
             SuspendLayout();
             // 
             // btnAceptar
@@ -69,11 +72,41 @@
             btnAtras.UseVisualStyleBackColor = true;
             btnAtras.Click += btnAtras_Click_1;
             // 
+            // label5
+            // 
+            label5.Font = new Font("Verdana", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(91, 56);
+            label5.Name = "label5";
+            label5.Size = new Size(405, 37);
+            label5.TabIndex = 16;
+            label5.Text = "REGISTRAR PRESTAMOS";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(281, 118);
+            label1.Name = "label1";
+            label1.Size = new Size(46, 20);
+            label1.TabIndex = 29;
+            label1.Text = "Libro:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(91, 118);
+            label2.Name = "label2";
+            label2.Size = new Size(38, 20);
+            label2.TabIndex = 28;
+            label2.Text = "DNI:";
+            // 
             // FormPrestamos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
+            Controls.Add(label2);
+            Controls.Add(label5);
             Controls.Add(btnAtras);
             Controls.Add(comboBoxLibros);
             Controls.Add(txtDni);
@@ -90,5 +123,8 @@
         private TextBox txtDni;
         private ComboBox comboBoxLibros;
         private Button btnAtras;
+        private Label label5;
+        private Label label1;
+        private Label label2;
     }
 }
